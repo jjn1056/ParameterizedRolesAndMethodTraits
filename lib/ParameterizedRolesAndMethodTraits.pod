@@ -1,5 +1,8 @@
 package ParameterizedRolesAndMethodTraits;
 
+use 5.008008;
+our $VERSION = '0.01';
+
 =head1 INTRODUCTION
 
 You might already know I'm a big fan of MooseX::Declare, which takes all the programming ease and power of Moose, and adds a sweeter syntax which includes the most flexible method body signature system I've seen in any popular programming language.  For the uninitiated you can go from:
@@ -141,6 +144,13 @@ For more info see:
 	- Also see Rafl's blog on MooseX::Declare and Parameterized Roles.
 
 Have Fun!
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2010 by John Napiorkowski.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 
