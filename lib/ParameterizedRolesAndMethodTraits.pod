@@ -5,7 +5,7 @@ our $VERSION = '0.01';
 
 =head1 INTRODUCTION
 
-You might already know I'm a big fan of MooseX::Declare, which takes all the programming ease and power of Moose, and adds a sweeter syntax which includes the most flexible method body signature system I've seen in any popular programming language.  For the uninitiated you can go from:
+You might already know I'm a big fan of L<MooseX::Declare>, which takes all the programming ease and power of L<Moose>, and adds a sweeter syntax which includes the most flexible method body signature system I've seen in any popular programming language.  For the uninitiated you can go from:
 
     package MooseClass;
     use Moose;
@@ -26,13 +26,13 @@ To something like:
         }
     }
 
-This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get Moose type constraint checking in method signatures for free, and hopefully this looks much more like what a modern programmer expects to see when creating classes.  The only downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use Method::Signatures::Simple to get the shiny 'method' keyword (although you loose the method body signatures). 
+This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get L<Moose> type constraint checking in method signatures for free, and hopefully this looks much more like what a modern programmer expects to see when creating classes.  The only downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use L<Method::Signatures::Simple> to get the shiny 'method' keyword (although you loose the method body signatures). 
 
-Anyway, you may not know it, but MooseX::Declare has some sweet syntax for declaring parameterized Roles (via MooseX::Role::Parameterized) and method traits.  Both features are relatively undocumented, so here's the basic idea:
+Anyway, you may not know it, but MooseX::Declare has some sweet syntax for declaring parameterized Roles (via L<MooseX::Role::Parameterized>) and method traits.  Both features are relatively undocumented, so here's the basic idea:
 
 =head1 PARAMETERIZED ROLES
 
-A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works.  For example, MooseX::Role::BuildInstanceOf makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for MooseX:::Role::Parameterized is a bit verbose.  With MooseX::Declare you can replace:
+A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for MooseX:::Role::Parameterized is a bit verbose.  With MooseX::Declare you can replace:
 
     package MyParameterizableRole;
     use MooseX::Role::Parameterized;
@@ -91,21 +91,21 @@ For more information be sure to see the documentation for MooseX::Role::Paramete
 
 =head1 METHOD TRAITS
 
-In order to understand method traits, you need to remember that a method in Moose is represented internally by an instance of Moose::Meta::Method (itself a subclass of Class::MOP::Method) which mean that you can use roles to modify how a method works.  For example, you can add a role to a method that automatically adds logging when a method is called.  That's all that a method trait is, a role applied at runtime to a declared method.  It can take parameters, but unlike a parameterized role, the parameters are applied to the method instance attributes.  So a method trait is just a regular Moose role.  
+In order to understand method traits, you need to remember that a method in Moose is represented internally by an instance of L<Moose::Meta::Method> (itself a subclass of L<Class::MOP::Method>) which mean that you can use roles to modify how a method works.  For example, you can add a role to a method that automatically adds logging when a method is called.  That's all that a method trait is, a role applied at runtime to a declared method.  It can take parameters, but unlike a parameterized role, the parameters are applied to the method instance attributes.  So a method trait is just a regular Moose role.  
 
 For example, here's a role that wraps the return of a method in html your HTML tag of choice:
 
     use MooseX::Declare;
     role MyMethodTrait {
-        has tag => (is=>'ro', isa=>'Str', required=>, default=>'div');
+        has tag => (is=>'ro', isa=>'Str', required=>1, default=>'div');
         around wrap(ClassName $class: $code, %options) {
             my $method_obj;
              $method_obj = $class->$orig(
                  sub {
                     my ($self, $arg) = @_;
-                    my $tag = $self->tag;
-                    my $tagged = sprintf("<%s>%d</%s>", $tag, $arg, $tag);
-                     $self->$code($tagged);
+                    my $tag = $method_obj->tag;
+                    my $title = $self->$code($arg);
+                    return sprintf("<%s>%s</%s>", $tag, $title, $tag);
                  }, %options,
              );
              return $method_obj
@@ -115,7 +115,7 @@ For example, here's a role that wraps the return of a method in html your HTML t
 Okay, so I'm not going to a lot of trouble to make sure the tag attributes is a valid HTML tag, but adding that bit would be easy with any number of CPAN modules.  You'd use the method trait like so:
 
     use MooseX::Declare;
-    class MyClass {
+    class MyParameterizedAndTrait {
         method title(Str $string)
         does MyMethodTrait(tag=>"p")
         {
@@ -129,10 +129,10 @@ Okay, so I'm not going to a lot of trouble to make sure the tag attributes is a 
 
 That 'does' (and its alias 'is') is similar to the way 'with' works on the class level, it applies the role at runtime to the instance representing the method.  Parameters basically get passed down at construction time.  So, if you constructed the above class and called the method 'title' like so, you get the following:
 
-    my $my_class = MyClass->new;
-    say $my_class->title("Hello World!");
+    my $obj = MyParameterizedAndTrait->new;
+    say $obj->title("Hello World!");
 
-    ## output is: "<p>FAQ: Hello World</p>"
+    ## output is: "<p>'FAQ: Hello' is the title</p>"
 
 =head1 CONCLUSION
 
@@ -141,7 +141,7 @@ MooseX::Declare is more than just a sweeter syntax for Moose, it aggregates and 
 For more info see:
 
     - All the code and text of the blog can be downloaded /forked /executed over on Github.  
-    - Also see Rafl's blog on MooseX::Declare and Parameterized Roles.
+    - Also see Rafl's blog on MooseX::Declare and Parameterized Roles
 
 Have Fun!
 
