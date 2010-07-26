@@ -9,7 +9,7 @@ You might already know I'm a big fan of MooseX::Declare, which takes all the pro
 
 	sub my_method {
 		my ($self, $name, $age) = @_;
-		return “Hi $name, you are $age years old”;
+		return "Hi $name, you are $age years old”;
 	}
 
 	__PACKAGE__->meta->make_immutable;
@@ -19,11 +19,11 @@ To something like:
 	use MooseX::Declare;
 	class MooseXDeclareClass {
 		method my_method(Str $name, Int $age) {
-			return “Hi $name, you are $age years old”;
+			return "Hi $name, you are $age years old”;
 		}
 	}
 
-This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with “@_”.  You get Moose type constraint checking in method signatures for free, and hopefully this looks much more like what a modern programmer expects to see when creating classes.  The only downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use Method::Signatures::Simple to get the shiny 'method' keyword (although you loose the method body signatures). 
+This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_”.  You get Moose type constraint checking in method signatures for free, and hopefully this looks much more like what a modern programmer expects to see when creating classes.  The only downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use Method::Signatures::Simple to get the shiny 'method' keyword (although you loose the method body signatures). 
 
 Anyway, you may not know it, but MooseX::Declare has some sweet syntax for declaring parameterized Roles (via MooseX::Role::Parameterized) and method traits.  Both features are relatively undocumented, so here's the basic idea:
 
@@ -35,14 +35,14 @@ A Parameterized Role is a sort of Role generator.  This lets you make more gener
 	use MooseX::Role::Parameterized;
 
 	parameter target_method => (
-		isa => “Str”,
+		isa => "Str”,
 		required => 1,
 	);
 
 	parameter  prefix => (
-		isa => “Str”,
+		isa => "Str”,
 		required => 1,
-		default => “test”,
+		default => "test”,
 	);
 
 	role {
@@ -50,7 +50,7 @@ A Parameterized Role is a sort of Role generator.  This lets you make more gener
 		requires $p->target_method;
 		around $p->target_method => sub {
 			my ($orig, $self, $string) = @_;
-			return $p->prefix .“:”. $self->$orig($string);
+			return $p->prefix .":”. $self->$orig($string);
 		};
 	}
 	
@@ -65,7 +65,7 @@ With:
 	) {
  		requires $target_method;
  		around $target_method(Str $string) {
- 			return $self->$orig(“$prefix: $string”);
+ 			return $self->$orig("$prefix: $string”);
 		}
  	}
 
@@ -74,11 +74,11 @@ This would create a role that decorates a method of choice with some additional 
 	use MooseX::Declare;
 	class MyClass {
 		method title(Str $string) {
-			return “'$string' is the title”;
+			return "'$string' is the title”;
 		}
 		with 'MyParameterizableRole' => {
-			target_method => “title”,
-			prefix => “FAQ”,
+			target_method => "title”,
+			prefix => "FAQ”,
 		};
 	}
 
@@ -101,7 +101,7 @@ For example, here's a role that wraps the return of a method in html your HTML t
  				sub {
 					my ($self, $arg) = @_;
 					my $tag = $self->tag;
-					my $tagged = sprintf(“<%s>%d</%s>”, $tag, $arg, $tag);
+					my $tagged = sprintf("<%s>%d</%s>”, $tag, $arg, $tag);
  					$self->$code($tagged);
  				}, %options,
  			);
@@ -116,20 +116,20 @@ Okay, so I'm not going to a lot of trouble to make sure the tag attributes is a 
 		method title(Str $string)
 		does MyMethodTrait(tag=>”p”)
 		{
-			return “'$string' is the title”;
+			return "'$string' is the title”;
 		}
 		with 'MyParameterizableRole' => {
-			target_method => “title”,
-			prefix => “FAQ”,
+			target_method => "title”,
+			prefix => "FAQ”,
 		};
 	}
 
 That 'does' (and its alias 'is') is similar to the way 'with' works on the class level, it applies the role at runtime to the instance representing the method.  Parameters basically get passed down at construction time.  So, if you constructed the above class and called the method 'title' like so, you get the following:
 
 	my $my_class = MyClass->new;
-	say $my_class->title(“Hello World!”);
+	say $my_class->title("Hello World!”);
 
-	## output is: “<p>FAQ: Hello World</p>”
+	## output is: "<p>FAQ: Hello World</p>”
 
 =head1 CONCLUSION
 
