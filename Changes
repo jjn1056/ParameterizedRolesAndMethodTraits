@@ -1,0 +1,4 @@
+ 
+0.01 26 July 2010
+    - initial revision, setup project framework, database configuration and
+      the basic tests, etc. Basically everything needed to bootstrap
