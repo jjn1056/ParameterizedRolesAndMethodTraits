@@ -36,7 +36,7 @@ INTRODUCTION
 
     Anyway, you may not know it, but MooseX::Declare has some sweet syntax
     for declaring parameterized Roles (via MooseX::Role::Parameterized) and
-    method traits. Both features are relatively undocumented, so here's the
+    Method Traits. Both features are relatively undocumented, so here's the
     basic idea:
 
 PARAMETERIZED ROLES
@@ -130,10 +130,12 @@ METHOD TRAITS
 
         use MooseX::Declare;
         role MyMethodTrait {
+            use Scalar::Util;
             has tag => (is=>'ro', isa=>'Str', required=>1, default=>'div');
             around wrap(ClassName $class: $code, %options) {
                 my $method_obj;
                 my $new_method = method(Str $string) {
+                    Scalar::Util::weaken($method_obj);
                     my $tag = $method_obj->tag;
                     my $title = $self->$code($string);
                     return "<$tag>$title</$tag>";
@@ -173,10 +175,10 @@ METHOD TRAITS
 
 CONCLUSION
     MooseX::Declare is more than just a sweeter syntax for Moose, it
-    aggregates and simplifies use of some valuable techniques for build
-    classes. Both parameterized roles and method traits offer techniques for
-    reusing behavior and logic that can be semantically more meaningful than
-    alternatives.
+    aggregates and simplifies use of some valuable techniques for building
+    better Object Oriented code. Both parameterized roles and method traits
+    offer techniques for reusing behavior and logic that can be semantically
+    more meaningful than alternatives.
 
     For more info see:
 
