@@ -11,6 +11,7 @@ my @core_requires = (
     'Moose' => '1.09',
     'MooseX::Declare' => '0.33',
     'MooseX::Role::Parameterized' => '0.19',
+    'Scalar::Util' => '1.23',
 );
 
 requires @core_requires;

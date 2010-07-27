@@ -28,11 +28,11 @@ To something like:
 
 This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get L<Moose> type constraint checking in method signatures for free, and hopefully this looks much more like what a modern programmer expects to see when creating classes.  The only downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use L<Method::Signatures::Simple> to get the shiny 'method' keyword (although you loose the method body signatures). 
 
-Anyway, you may not know it, but MooseX::Declare has some sweet syntax for declaring parameterized Roles (via L<MooseX::Role::Parameterized>) and method traits.  Both features are relatively undocumented, so here's the basic idea:
+Anyway, you may not know it, but L<MooseX::Declare> has some sweet syntax for declaring parameterized Roles (via L<MooseX::Role::Parameterized>) and Method Traits.  Both features are relatively undocumented, so here's the basic idea:
 
 =head1 PARAMETERIZED ROLES
 
-A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for MooseX:::Role::Parameterized is a bit verbose.  With MooseX::Declare you can replace:
+A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for L<MooseX:::Role::Parameterized> is a bit verbose.  With L<MooseX::Declare> you can replace:
 
     package MyParameterizableRole;
     use MooseX::Role::Parameterized;
@@ -87,7 +87,7 @@ This would create a role that decorates a method of choice with some additional 
 
 You'd get a class with a decorated method.  The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible since if you declare a method with 'sub' that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method, that method must be declared prior.  You'll need to remember this when using roles with MooseX::Declare.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.
 
-For more information be sure to see the documentation for MooseX::Role::Parameterized.
+For more information be sure to see the documentation for L<MooseX::Role::Parameterized>.
 
 =head1 METHOD TRAITS
 
@@ -134,7 +134,7 @@ That 'does' (and its alias 'is') is similar to the way 'with' works on the class
 
 =head1 CONCLUSION
 
-MooseX::Declare is more than just a sweeter syntax for Moose, it aggregates and simplifies use of some valuable techniques for build classes.  Both parameterized roles and method traits offer techniques for reusing behavior and logic that can be semantically more meaningful than alternatives.
+MooseX::Declare is more than just a sweeter syntax for L<Moose>, it aggregates and simplifies use of some valuable techniques for building better Object Oriented code.  Both parameterized roles and method traits offer techniques for reusing behavior and logic that can be semantically more meaningful than alternatives.
 
 For more info see:
 
