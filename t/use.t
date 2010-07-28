@@ -10,5 +10,7 @@ use_ok 'MyMethodTrait';
 use_ok 'MyParameterizedAndTrait';
 use_ok "HasLogging";
 use_ok 'LoggedMethodsParameterizableRole';
- 
+use_ok "HasLoggingMethodTrait";
+use_ok "LoggedMethodsMethodTrait"; 
+
 done_testing; 

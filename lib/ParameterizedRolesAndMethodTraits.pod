@@ -225,7 +225,32 @@ And here's how we might use it in a real class
         
 So this is pretty straightforward, however if you want to apply it to a bunch of methods code get a bit verbose, although it would probably not be hard to change this to take an array of target methods.  How might we do this with a method trait instead?  Here's one way:
 
-And you'd use it like:
+    use MooseX::Declare;
+    role HasLoggingMethodTrait {
+        use Scalar::Util 'weaken';
+        require Data::Dumper;
+        around wrap(ClassName $class: $code, %options) {
+            my ($method_obj, $weak_method_obj);
+            $method_obj = $weak_method_obj = $class->$orig(sub {
+                my ($self, @args) = @_;
+                my $target_method = $weak_method_obj->name;
+                warn "$target_method was called with " . Data::Dumper::Dumper(\@args);
+                return $self->$code(@args);
+            }, %options);
+            weaken($weak_method_obj);
+            return $method_obj;
+        }
+    }
+
+So that's quite a bit more code, a lot of it boilerplate, but as I said this functionality is relatively new and there's a lot of opportunity for other people to jump in and improve or simplify the process.  In any case you'd use it like:
+
+    use MooseX::Declare;
+    class LoggedMethodsMethodTrait {
+        method my_method(Str $name, Int $age)
+        does HasLoggingMethodTrait {
+            return "Hi $name, you are $age years old";
+        }
+    }
 
 So two ways to solve basically the same problem.  Which one to use?  Personally I'd take the Parameterized role version for this particular problem, since logging is something I might want to configure and change often, and with a role I can apply late, perhaps even in configuration, or with something like L<MooseX::Traits>.  Currently you can't do this with a method trait.  However for cases where the trait is very tightly tied to the desired behavior of the method, a method trait is probably the better choice.
 
