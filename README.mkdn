@@ -99,7 +99,14 @@ That's a lot less code, much less boilerplate!  This would create a role that de
         };
     }
 
-You'd get a class with a decorated method.  The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible since if you declare a method with 'sub' that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method (as this one does, via the 'requires' keyword), that method must be declared prior to including the role.  You'll need to remember this when using roles with [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare) and the method keyword.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.  In fact, I find that it tends to clean up and clarify the progression of activity in my classes, since instead of declaring all my roles at the top of my class, they get stuck near the point where they are being used.
+You'd get a class with a decorated method.  It would work like the following example:
+
+    my $object = MyDecoratedClass->new;
+    say $object->title("Using Moose");
+
+    ## would output: "'FAQ:Using Moose' is the title"
+
+The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible since if you declare a method with 'sub' that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method (as this one does, via the 'requires' keyword), that method must be declared prior to including the role.  You'll need to remember this when using roles with [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare) and the method keyword.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.  In fact, I find that it tends to clean up and clarify the progression of activity in my classes, since instead of declaring all my roles at the top of my class, they get stuck near the point where they are being used.
 
 For more information be sure to see the documentation for [MooseX::Role::Parameterized](http://search.cpan.org/perldoc?MooseX::Role::Parameterized).
 
