@@ -97,17 +97,17 @@ For example, here's a role that wraps the return of a method in html your HTML t
 
     use MooseX::Declare;
     role MyMethodTrait {
-        use Scalar::Util;
+        use Scalar::Util 'weaken';
         has tag => (is=>'ro', isa=>'Str', required=>1, default=>'div');
         around wrap(ClassName $class: $code, %options) {
-            my $method_obj;
-            my $new_method = method(Str $string) {
-                Scalar::Util::weaken($method_obj);
-                my $tag = $method_obj->tag;
+            my ($method_obj, $weak_method_obj);
+            $method_obj = $weak_method_obj = $class->$orig(sub {
+                my ($self, $string) = @_;
                 my $title = $self->$code($string);
+                my $tag = $weak_method_obj->tag;
                 return "<$tag>$title</$tag>";
-            };
-            $method_obj = $class->$orig($new_method->actual_body, %options);
+            }, %options);
+            weaken($weak_method_obj);
             return $method_obj;
         }
     }
