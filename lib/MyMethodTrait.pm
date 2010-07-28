@@ -1,18 +1,17 @@
 use MooseX::Declare;
 role MyMethodTrait {
+    use Scalar::Util 'weaken';
     has tag => (is=>'ro', isa=>'Str', required=>1, default=>'div');
     around wrap(ClassName $class: $code, %options) {
-        my $replacement = sub {
-            my ($method_obj, $self, $string) = @_;
+        my ($method_obj, $weak_method_obj);
+        $method_obj = $weak_method_obj = $class->$orig(sub {
+            my ($self, $string) = @_;
             my $title = $self->$code($string);
-            my $tag = $method_obj->tag;
+            my $tag = $weak_method_obj->tag;
             return "<$tag>$title</$tag>";
-        };
-        my $method_obj;
-        $method_obj = $class->$orig(sub {$replacement->($method_obj,@_)}, %options);
-
+        }, %options);
+        weaken($weak_method_obj);
         return $method_obj;
     }
 }
-
 
