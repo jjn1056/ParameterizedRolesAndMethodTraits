@@ -5,17 +5,17 @@ our $VERSION = '0.01';
 
 =head1 TITLE
 
-Parameterized Roles and Method Traits - Discussion on MooseX::Declare advanced composition features
+Parameterized Roles and Method Traits - Discussion on L<MooseX::Declare> advanced code composition features
 
 =head1 INTRODUCTION
 
-This is a discussion of some advanced features of L<Moose> and L<MooseX::Declare>.  If you are new to Perl or Moose I recommend the following tutorials and web resources to get you up to speed.  These should be your first stop if you are new to L<Moose> or never heard of roles.
+This is a discussion of some advanced features of L<Moose> and L<MooseX::Declare>.  If you are new to L<Perl|http://perl.org> or L<Moose|http://moose.perl.org> I recommend the following tutorials and web resources to get you up to speed.  These should be your first stop if you are new to L<Moose> or never heard of roles.
 
 =over4
 
 =item Learning Perl
 
-See the web site L<Learning Perl:http://learn.perl.org>
+See the web site L<Learning Perl|http://learn.perl.org>
 
 =item Moose Tutorial
 
@@ -23,7 +23,7 @@ See the excellent L<Moose::Tutorial> which is a good lead in to the general L<Mo
 
 =item Moose Homepage
 
-The L<Moose Homepage:http://moose.perl.org> has a good collection of links to blogs, articles and presentations.
+The L<Moose Homepage|http://moose.perl.org> has a good collection of links to blogs, articles and presentations.
 
 =back
 
@@ -48,13 +48,13 @@ To something like:
         }
     }
 
-This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get L<Moose> type constraint checking in method signatures for free.  Additionally this looks much more like what a modern programmer expects to see when creating classes, which should make it easier for people coming from other languages to get excited about Perl.  The only (current) downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use L<Method::Signatures::Simple> to get the shiny 'method' keyword (although you loose the method body signature type constraint checking). 
+This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get L<Moose> L<type constraint checking|http://search.cpan.org/perldoc?Moose::Util::TypeConstraints> in method signatures for free.  Additionally this looks much more like what a modern programmer expects to see when creating classes, which should make it easier for people coming from other languages to get excited about modern Perl.  The only (current) downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use L<Method::Signatures::Simple> to get the shiny 'method' keyword (although you loose the method body signature type constraint checking). 
 
 Anyway, you may not know it, but L<MooseX::Declare> has some sweet syntax for declaring parameterized Roles (via L<MooseX::Role::Parameterized>) and Method Traits.  Both features are relatively undocumented in L<MooseX::Declare>, so here's the basic idea.
 
 =head1 PARAMETERIZED ROLES
 
-A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for L<MooseX:::Role::Parameterized> is a bit verbose.  With L<MooseX::Declare> you can replace:
+A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works before its applied to its consuming class.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for L<MooseX:::Role::Parameterized> is a bit verbose.  With L<MooseX::Declare> you can replace:
 
     package MyParameterizableRole;
     use MooseX::Role::Parameterized;
@@ -94,7 +94,7 @@ With:
         }
     }
 
-This would create a role that decorates a method of choice with some additional text prepended to to start of the method retunr.  You might use it like:
+That's a lot less code, much less boilerplate!  This would create a role that decorates a method of choice with some additional text prepended to to start of the method return.  You might use it like:
 
     use MooseX::Declare;
     class MyDecoratedClass {
@@ -107,15 +107,15 @@ This would create a role that decorates a method of choice with some additional 
         };
     }
 
-You'd get a class with a decorated method.  The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible since if you declare a method with 'sub' that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method (as this one does, via the 'requires' keyword), that method must be declared prior to including the role.  You'll need to remember this when using roles with L<MooseX::Declare> and the method keyword.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.  In fact, I find that is tends to clean up and clarify the progression of activity in my classes, since instead of declaring all my roles at the top of my class, they get stuck near the point where they are being used.
+You'd get a class with a decorated method.  The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible since if you declare a method with 'sub' that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method (as this one does, via the 'requires' keyword), that method must be declared prior to including the role.  You'll need to remember this when using roles with L<MooseX::Declare> and the method keyword.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.  In fact, I find that it tends to clean up and clarify the progression of activity in my classes, since instead of declaring all my roles at the top of my class, they get stuck near the point where they are being used.
 
 For more information be sure to see the documentation for L<MooseX::Role::Parameterized>.
 
 =head1 METHOD TRAITS
 
-In order to understand method traits, you need to remember that a method in Moose is represented internally by an instance of L<Moose::Meta::Method> (itself a subclass of L<Class::MOP::Method>) which mean that you can use roles to modify how a method works.  For example, you can add a role to a method that automatically adds logging when a method is called (see below example).  Your role can alter or wrap any aspect of how a method instance works, although one of the most typical and useful things to alter is how the code reference that the method executes performs its job.  That's all that a method trait is, a role applied at runtime to a declared method.  It can take parameters, but unlike a parameterized role, the parameters are applied to the method instance attributes.  So a method trait is just a regular Moose role.  
+In order to understand method traits, you need to remember that a method in L<Moose> is represented internally by an instance of L<Moose::Meta::Method> (itself a subclass of L<Class::MOP::Method>) which mean that you can use roles to modify how a method works in the same you'd do with any class.  For example, you can add a role to a method that automatically adds logging when a method is called.  Your role can alter or wrap any aspect of how a method instance works, although one of the most typical and useful things to alter is how the code reference that the method executes performs its job.  That's all that a method trait is, a role applied at runtime to a declared method.  It can take parameters, but unlike a parameterized role, the parameters are applied to the method instance attributes.  So a method trait is just a regular Moose role.  
 
-For example, here's a role that wraps the return of a method in your HTML tag of choice:
+For example, here's a role that wraps the return of any method in your HTML tag of choice:
 
     use MooseX::Declare;
     role MyMethodTrait {
@@ -139,7 +139,7 @@ So thats a bit complicated so I'll step through the code to make sure you unders
     use MooseX::Declare;
     role MyMethodTrait {
 
-This just sets you up to use L<MooseX::Declare> and then declares that you are going to be making a L<Moose> role.
+This just sets you up to use L<MooseX::Declare> and then declares that you are going to be making a L<Moose::Role>.
 
         use Scalar::Util 'weaken';
 
@@ -151,7 +151,7 @@ Here you add a new attribute called 'tag' which will be applied to the consuming
 
         around wrap(ClassName $class: $code, %options) {
 
-The method C<wrap> is a class method which is responsible for actually building the instance of your method class. Since it is a class method you need to inform L<MooseX::Declare> that the invocant is a C<ClassName> and not an C<Object> as it normally is.  That's why we redefine the invocant of the method signature.  You'll need to do this anytime you L<MooseX::Declare> methods are called this way.
+The method C<wrap> is a class method which is responsible for actually building the instance of your method class. Since it is a class method you need to inform L<MooseX::Declare> that the invocant is a C<ClassName> and not an C<Object> as it normally is.  That's why we redefine the invocant of the method signature.  You'll need to do this anytime your L<MooseX::Declare> methods are called this way.
 
 C<wrap> recieves two positional parameters, a C<CodeRef> which is the actual body of the method (the stuff inside the "{ ... }" for your method) and a C<Hash> of options.  Don't worry about C<%options> for now, just realize that if you are going to wrap C<wrap> you'll need to pass them on to the underlying class.
 
@@ -201,7 +201,7 @@ So far the given examples are a bit contrived, so let's try seeing how we'd impl
         warn "mymethod was called with $arg";
     }
 
-Also, you'd like to regularize your approach and interface so that if in the future you wanted to move to a logger with more features, such as L<Log::Dispatch>, you can change that in one place, and not have to modified tons of code.  This is a trivial, yet not toy, bit of logic.  So, how might we do this with a parameterized role?  Here's my take.
+Also, you'd like to regularize your approach and interface so that if in the future you wanted to move to a logger with more features, such as L<Log::Dispatch>, you can change that in one place, and not have to modified tons of code.  This is a trivial, yet not toy, bit of logic.  So, how might we do this with a parameterized role?  Here's my take:
 
     use MooseX::Declare;
     role HasLogging(Str :$target_method!) {
@@ -254,18 +254,17 @@ So that's quite a bit more code, a lot of it boilerplate, but as I said this fun
 
 So two ways to solve basically the same problem.  Which one to use?  Personally I'd take the Parameterized role version for this particular problem, since logging is something I might want to configure and change often, and with a role I can apply late, perhaps even in configuration, or with something like L<MooseX::Traits>.  Currently you can't do this with a method trait.  However for cases where the trait is very tightly tied to the desired behavior of the method, a method trait is probably the better choice.
 
-Best practices continue to evolve and there's plenty of room open for discussion, examples and contributions.
+Best practices continue to evolve and there's plenty of room open for discussion, examples and contributions.  Lets here what you think!
 
 =head1 CONCLUSION
 
-MooseX::Declare is more than just a sweeter syntax for L<Moose>, it aggregates and simplifies use of some valuable techniques for building better Object Oriented code.  Both parameterized roles and method traits offer techniques for reusing behavior and logic that can be semantically more meaningful than alternatives.
-
-For more info see:
-
-    - All the code and text of the blog can be downloaded /forked /executed over on Github.  
-    - Also see Rafl's blog on MooseX::Declare and Parameterized Roles
+L<MooseX::Declare> is more than just a sweeter syntax for L<Moose>, it aggregates and simplifies use of some valuable methods for building better Object Oriented code.  Both parameterized roles and method traits offer techniques for reusing behavior and logic that can be semantically more meaningful than alternatives.
 
 Have Fun!
+
+=head1 THANKS
+
+Thanks to the members of IRC #moose and Doy in particular for assistance to checking the code for this article.
 
 =head1 COPYRIGHT AND LICENSE
 
