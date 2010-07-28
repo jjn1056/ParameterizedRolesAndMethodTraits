@@ -4,11 +4,11 @@ Parameterized Roles and Method Traits - Discussion on [MooseX::Declare](http://s
 
 # INTRODUCTION
 
-This is a discussion of some advanced features of [Moose](http://search.cpan.org/perldoc?Moose) and [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare).  If you are new to L<Perl|http://perl.org> or L<Moose|http://moose.perl.org> I recommend the following tutorials and web resources to get you up to speed.  These should be your first stop if you are new to [Moose](http://search.cpan.org/perldoc?Moose) or never heard of roles.
+This is a discussion of some advanced features of [Moose](http://search.cpan.org/perldoc?Moose) and [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare).  If you are new to [Perl](http://search.cpan.org/perldoc?Perl) or [Moose](http://search.cpan.org/perldoc?Moose) I recommend the following tutorials and web resources to get you up to speed.  These should be your first stop if you are new to [Moose](http://search.cpan.org/perldoc?Moose) or never heard of roles.  This is far from an exhaustive list, but should get you started
 
 - Learning Perl
 
-See the web site L<Learning Perl|http://learn.perl.org>
+See the web site "Learning Perl", <http://learn.perl.org>
 
 - Moose Tutorial
 
@@ -16,7 +16,7 @@ See the excellent [Moose::Tutorial](http://search.cpan.org/perldoc?Moose::Tutori
 
 - Moose Homepage
 
-The L<Moose Homepage|http://moose.perl.org> has a good collection of links to blogs, articles and presentations.
+The <http://moose.perl.org> has a good collection of links to blogs, articles and presentations.
 
 You might already know I'm a big fan of [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare), which takes all the programming ease and power of [Moose](http://search.cpan.org/perldoc?Moose), and adds a sweeter syntax which includes the most flexible method body signature system I've seen in any popular programming language.  For the uninitiated you can go from:
 
@@ -39,7 +39,7 @@ To something like:
         }
     }
 
-This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get [Moose](http://search.cpan.org/perldoc?Moose) L<type constraint checking|http://search.cpan.org/perldoc?Moose::Util::TypeConstraints> in method signatures for free.  Additionally this looks much more like what a modern programmer expects to see when creating classes, which should make it easier for people coming from other languages to get excited about modern Perl.  The only (current) downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use [Method::Signatures::Simple](http://search.cpan.org/perldoc?Method::Signatures::Simple) to get the shiny 'method' keyword (although you loose the method body signature type constraint checking). 
+This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get [Moose](http://search.cpan.org/perldoc?Moose) type constraint checking ([Moose::Util::TypeConstraints](http://search.cpan.org/perldoc?Moose::Util::TypeConstraints)) in method signatures for free.  Additionally this looks much more like what a modern programmer expects to see when creating classes, which should make it easier for people coming from other languages to get excited about modern Perl.  The only (current) downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use [Method::Signatures::Simple](http://search.cpan.org/perldoc?Method::Signatures::Simple) to get the shiny 'method' keyword (although you loose the method body signature type constraint checking). 
 
 Anyway, you may not know it, but [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare) has some sweet syntax for declaring parameterized Roles (via [MooseX::Role::Parameterized](http://search.cpan.org/perldoc?MooseX::Role::Parameterized)) and Method Traits.  Both features are relatively undocumented in [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare), so here's the basic idea.
 
@@ -254,6 +254,12 @@ Best practices continue to evolve and there's plenty of room open for discussion
 [MooseX::Declare](http://search.cpan.org/perldoc?MooseX::Declare) is more than just a sweeter syntax for [Moose](http://search.cpan.org/perldoc?Moose), it aggregates and simplifies use of some valuable methods for building better Object Oriented code.  Both parameterized roles and method traits offer techniques for reusing behavior and logic that can be semantically more meaningful than alternatives.
 
 Have Fun!
+
+# GET THIS CODE
+
+All the code listed in the above article can be checked out from Github, over at: <http://github.com/jjn1056/ParameterizedRolesAndMethodTraits>.  That include the raw copy of this document and all the code examples broken out into individual classes with test cases and a Makefile.PL of all the required dependencies.  A prepared distribution installable with the standard Perl toolchain ([CPAN](http://search.cpan.org/perldoc?CPAN), [cpanminus](http://search.cpan.org/perldoc?cpanminus)) will follow shortly.
+
+Free free to fork on Github and submit your changes or corrections!
 
 # THANKS
 

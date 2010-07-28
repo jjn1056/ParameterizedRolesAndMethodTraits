@@ -9,13 +9,13 @@ Parameterized Roles and Method Traits - Discussion on L<MooseX::Declare> advance
 
 =head1 INTRODUCTION
 
-This is a discussion of some advanced features of L<Moose> and L<MooseX::Declare>.  If you are new to L<Perl|http://perl.org> or L<Moose|http://moose.perl.org> I recommend the following tutorials and web resources to get you up to speed.  These should be your first stop if you are new to L<Moose> or never heard of roles.
+This is a discussion of some advanced features of L<Moose> and L<MooseX::Declare>.  If you are new to L<Perl> or L<Moose> I recommend the following tutorials and web resources to get you up to speed.  These should be your first stop if you are new to L<Moose> or never heard of roles.  This is far from an exhaustive list, but should get you started
 
 =over4
 
 =item Learning Perl
 
-See the web site L<Learning Perl|http://learn.perl.org>
+See the web site "Learning Perl", L<http://learn.perl.org>
 
 =item Moose Tutorial
 
@@ -23,7 +23,7 @@ See the excellent L<Moose::Tutorial> which is a good lead in to the general L<Mo
 
 =item Moose Homepage
 
-The L<Moose Homepage|http://moose.perl.org> has a good collection of links to blogs, articles and presentations.
+The L<http://moose.perl.org> has a good collection of links to blogs, articles and presentations.
 
 =back
 
@@ -48,7 +48,7 @@ To something like:
         }
     }
 
-This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get L<Moose> L<type constraint checking|http://search.cpan.org/perldoc?Moose::Util::TypeConstraints> in method signatures for free.  Additionally this looks much more like what a modern programmer expects to see when creating classes, which should make it easier for people coming from other languages to get excited about modern Perl.  The only (current) downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use L<Method::Signatures::Simple> to get the shiny 'method' keyword (although you loose the method body signature type constraint checking). 
+This gives you a more modern class and method declaration syntax which lets you dispense with all the boilerplate validation and mucking around with "@_".  You get L<Moose> type constraint checking (L<Moose::Util::TypeConstraints>) in method signatures for free.  Additionally this looks much more like what a modern programmer expects to see when creating classes, which should make it easier for people coming from other languages to get excited about modern Perl.  The only (current) downsides are a performance penalty and sometimes if you have syntax errors the error messages can be a little cryptic.  Both issues are a work in progress but if they really bother you you can always drop down to 'classic' Moose and use L<Method::Signatures::Simple> to get the shiny 'method' keyword (although you loose the method body signature type constraint checking). 
 
 Anyway, you may not know it, but L<MooseX::Declare> has some sweet syntax for declaring parameterized Roles (via L<MooseX::Role::Parameterized>) and Method Traits.  Both features are relatively undocumented in L<MooseX::Declare>, so here's the basic idea.
 
@@ -261,6 +261,12 @@ Best practices continue to evolve and there's plenty of room open for discussion
 L<MooseX::Declare> is more than just a sweeter syntax for L<Moose>, it aggregates and simplifies use of some valuable methods for building better Object Oriented code.  Both parameterized roles and method traits offer techniques for reusing behavior and logic that can be semantically more meaningful than alternatives.
 
 Have Fun!
+
+=head1 GET THIS CODE
+
+All the code listed in the above article can be checked out from Github, over at: L<http://github.com/jjn1056/ParameterizedRolesAndMethodTraits>.  That include the raw copy of this document and all the code examples broken out into individual classes with test cases and a Makefile.PL of all the required dependencies.  A prepared distribution installable with the standard Perl toolchain (L<CPAN>, L<cpanminus>) will follow shortly.
+
+Free free to fork on Github and submit your changes or corrections!
 
 =head1 THANKS
 
