@@ -15,6 +15,4 @@ role MyMethodTrait {
     }
 }
 
-__END__
-
 
