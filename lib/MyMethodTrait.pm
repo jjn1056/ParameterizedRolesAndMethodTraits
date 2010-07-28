@@ -1,11 +1,9 @@
 use MooseX::Declare;
 role MyMethodTrait {
-    use Scalar::Util;
     has tag => (is=>'ro', isa=>'Str', required=>1, default=>'div');
     around wrap(ClassName $class: $code, %options) {
         my $replacement = sub {
             my ($method_obj, $self, $string) = @_;
-            Scalar::Util::weaken($method_obj);
             my $title = $self->$code($string);
             my $tag = $method_obj->tag;
             return "<$tag>$title</$tag>";
