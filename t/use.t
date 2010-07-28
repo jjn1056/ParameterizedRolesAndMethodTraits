@@ -8,5 +8,7 @@ use_ok 'MyParameterizableRole';
 use_ok 'MyDecoratedClass';
 use_ok 'MyMethodTrait';
 use_ok 'MyParameterizedAndTrait';
+use_ok "HasLogging";
+use_ok 'LoggedMethodsParameterizableRole';
  
 done_testing; 
