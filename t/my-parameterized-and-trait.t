@@ -9,5 +9,5 @@ ok my $instance = MyParameterizedAndTrait->new,
 
 is $instance->title('Hello'), "<p>'FAQ: Hello' is the title</p>",
   'Works as expected';
-   
-done_testing; 
+
+done_testing;
