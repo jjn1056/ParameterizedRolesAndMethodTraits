@@ -54,7 +54,7 @@ Anyway, you may not know it, but L<MooseX::Declare> has some sweet syntax for de
 
 =head1 PARAMETERIZED ROLES
 
-A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works before its applied to its consuming class.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for L<MooseX:::Role::Parameterized> is a bit verbose.  With L<MooseX::Declare> you can replace:
+A Parameterized Role is a sort of Role generator.  This lets you make more generic roles by allowing you to specify role parameters at runtime.  These parameters can be used to inform and influence how a role works before its applied to its consuming class.  For example, L<MooseX::Role::BuildInstanceOf> makes it easier to aggregate functionality into a class by automatically generating accessors for a target instance.  However, the syntax for L<MooseX::Role::Parameterized> is a bit verbose.  With L<MooseX::Declare> you can replace:
 
     package MyParameterizableRole;
     use MooseX::Role::Parameterized;
@@ -114,7 +114,7 @@ You'd get a class with a decorated method.  It would work like the following exa
 
     ## would output: "'FAQ:Using Moose' is the title"
 
-The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible since if you declare a method with 'sub' that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method (as this one does, via the 'requires' keyword), that method must be declared prior to including the role.  You'll need to remember this when using roles with L<MooseX::Declare> and the method keyword.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.  In fact, I find that it tends to clean up and clarify the progression of activity in my classes, since instead of declaring all my roles at the top of my class, they get stuck near the point where they are being used.
+The only thing that might confuse you is how the 'with' is located after the method declaration.  I know you typically see the 'with' or 'extends' at the top of the class; this is possible when using classic L<Moose> since if you declare a method with the 'sub' keyword that get's parsed at compile time while the 'method' keyword is runtime.  This means that if the role you are aggregating requires a method (as this one does, via the 'requires' keyword), that method must be declared prior to including the role.  You'll need to remember this when using roles with L<MooseX::Declare> and the method keyword.  I know this might seem strange at first but just remember the run-time versus compile-time thing and all will be well.  In fact, I find that it tends to clean up and clarify the progression of activity in my classes, since instead of declaring all my roles at the top of my class, they get stuck near the point where they are being used.
 
 For more information be sure to see the documentation for L<MooseX::Role::Parameterized>.
 
@@ -165,7 +165,7 @@ C<wrap> recieves two positional parameters, a C<CodeRef> which is the actual bod
             my ($method_obj, $weak_method_obj);
             $method_obj = $weak_method_obj = $class->$orig(sub {
 
-So if you are already familiar with L<Moose> method modifiers and how they work in L<MooseX::Declare> this should not present too much difficulty.  If you are not familiar with this you really need to take a look at L<Moose::Manual::MethodModifiers > and the L<MooseX::Declare> documentation. Basically we are going to invoke the wrapped method with an alternative C<CodeRef> that changes the behavior of method body.  We assign the result to C<$method_obj> and C<$weak_method_obj> which have been predeclared so that we can close over C<$weak_method_obj>.  We need the closure since until we call the original method (via C<$orig>) we don't yet have a method instance, thus we don't know the value of the C<tag> attribute.  However, we jump through a few hoops here to avoid a circular reference, that's why we doubly assign the result, since we will need one unweaked reference to return at the end of the method.
+So if you are already familiar with L<Moose> method modifiers and how they work in L<MooseX::Declare> this should not present too much difficulty.  If you are not familiar with this you really need to take a look at L<Moose::Manual::MethodModifiers> and the L<MooseX::Declare> documentation. Basically we are going to invoke the wrapped method with an alternative C<CodeRef> that changes the behavior of method body.  We assign the result to C<$method_obj> and C<$weak_method_obj> which have been predeclared so that we can close over C<$weak_method_obj>.  We need the closure since until we call the original method (via C<$orig>) we don't yet have a method instance, thus we don't know the value of the C<tag> attribute.  However, we jump through a few hoops here to avoid a circular reference, that's why we doubly assign the result, since we will need one unweaked reference to return at the end of the method.
 
             $method_obj = $weak_method_obj = $class->$orig(sub {
                 my ($self, $string) = @_;
@@ -271,7 +271,7 @@ Have Fun!
 
 =head1 GET THIS CODE
 
-All the code listed in the above article can be checked out from Github, over at: L<http://github.com/jjn1056/ParameterizedRolesAndMethodTraits>.  That include the raw copy of this document and all the code examples broken out into individual classes with test cases and a Makefile.PL of all the required dependencies.  A prepared distribution installable with the standard Perl toolchain (L<CPAN>, L<cpanminus>) will follow shortly.
+All the code listed in the above article can be checked out from Github, over at: L<http://github.com/jjn1056/ParameterizedRolesAndMethodTraits>.  That include the raw copy of this document and all the code examples broken out into individual classes with test cases and a Makefile.PL of all the required dependencies.  A prepared distribution installable with the standard Perl toolchain (L<CPAN>, L<App::cpanminus>) will follow shortly.
 
 Free free to fork on Github and submit your changes or corrections!
 
